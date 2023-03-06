@@ -12,6 +12,7 @@ const User = require("../models/User.model");
 
 // Require necessary (isAuthenticated) middleware in order to control access to specific routes
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const requireToken = require("../middleware/requireToken");
 
 // How many rounds should bcrypt run the salt (default - 10 rounds)
 const saltRounds = 10;
@@ -58,7 +59,7 @@ router.post("/signup", (req, res, next) => {
 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
-      return User.create({ email, password: hashedPassword, name });
+      return User.create({ email, password: hashedPassword, name});
     })
     .then((createdUser) => {
       // Deconstruct the newly created user object to omit the password
@@ -101,7 +102,7 @@ router.post("/login", (req, res, next) => {
         const { _id, email, name } = foundUser;
 
         // Create an object that will be set as the token payload
-        const payload = { _id, email, name };
+        const payload = { _id, email, name};
 
         // Create a JSON Web Token and sign it
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
@@ -119,7 +120,7 @@ router.post("/login", (req, res, next) => {
 });
 
 // GET  /auth/verify  -  Used to verify JWT stored on the client
-router.get("/verify", isAuthenticated, (req, res, next) => {
+router.get("/verify", requireToken, isAuthenticated, (req, res, next) => {
   // If JWT token is valid the payload gets decoded by the
   // isAuthenticated middleware and is made available on `req.payload`
   // console.log(`req.payload`, req.payload);
