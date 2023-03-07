@@ -8,7 +8,7 @@ const playlistSchema = new Schema({
         type:String, 
         required: true
         },
-    traks:[{type: Schema.Types.ObjectId, ref:"song"}]
+    tracks:[{type: Schema.Types.ObjectId, ref:"song"}]
         
     })
 const Playlist = model("playlist", playlistSchema);

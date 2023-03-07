@@ -1,10 +1,13 @@
 const router = require("express").Router();
 const SpotifyWebApi = require('spotify-web-api-node');
-const {getPlaylists, getPlaylistById, createPlaylist, updatePlaylist, deletePlaylist } = require("../controllers/playlist.Controller")
+const {getPlaylists, getPlaylistById, createPlaylist, updatePlaylist, deletePlaylist } = require("../controllers/playlist.Controller");
+const { createSong, deleteSong } = require("../controllers/song.Controller");
+const User = require("../models/User.model");
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET
 });
+
 
 
 spotifyApi
@@ -88,11 +91,26 @@ router.get('/albums/:albumId/tracks', (req, res, next) => {
 })
 
 
+router.get('/user/:id', (req, res) => {
+    const {id} = req.params
+    User.findById(id)
+    .populate({path:"playlists", populate:{path:"tracks", model:"song"}})
+    .then((data)=> {res.json({data})})
+})
+
+
 router.get('/playlist',getPlaylists)
 router.get('/playlist/:id',getPlaylistById)
 router.post('/playlist',createPlaylist)
 router.put('/playlist/:id',updatePlaylist)
 router.delete('/playlist/:id',deletePlaylist)
+
+
+
+
+router.post('/song',createSong)
+router.delete('/song/:id',deleteSong)
+
 
 
 module.exports = router;

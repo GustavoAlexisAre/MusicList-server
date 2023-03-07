@@ -1,7 +1,5 @@
 const { Schema, model } = require("mongoose");
 
-
-
 const songSchema = new Schema({
 
     name:{
@@ -10,6 +8,8 @@ const songSchema = new Schema({
         },
         artist:String, 
         disc:String,
+        image:String,
+        url:String
     })
 const Song = model("song", songSchema);
 
