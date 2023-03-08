@@ -39,8 +39,9 @@ exports.updatePlaylist = async (req, res) => {
 
 //5. borrar una coleccion
 exports.deletePlaylist = async (req, res) => {
-	const { id } = req.params
-	await Playlist.findByIdAndDelete(id)
+	const {playlistid, userId} = req.params
+	await User.findByIdAndUpdate(userId, {$pull:{playlists:playlistid}}, {new:true})
+	await Playlist.findByIdAndDelete(playlistid)
 	res.json({ message: "deleted" })
 }
 

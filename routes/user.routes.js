@@ -103,13 +103,13 @@ router.get('/playlist',getPlaylists)
 router.get('/playlist/:id',getPlaylistById)
 router.post('/playlist',createPlaylist)
 router.put('/playlist/:id',updatePlaylist)
-router.delete('/playlist/:id',deletePlaylist)
+router.delete('/playlist/:playlistid/:userId',deletePlaylist)
 
 
 
 
 router.post('/song',createSong)
-router.delete('/song/:id',deleteSong)
+router.delete('/song/:trackId/:playlistId',deleteSong)
 
 
 

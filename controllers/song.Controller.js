@@ -12,8 +12,9 @@ exports.createSong = async (req, res) => {
 
 
 exports.deleteSong = async (req, res) => {
-	const { id } = req.params
-	await Songs.findByIdAndDelete(id)
+	const { trackId, playlistId} = req.params
+	await Playlist.findByIdAndUpdate(playlistId, {$pull:{tracks:playlistId}}, {new:true})
+	await Songs.findByIdAndDelete(trackId)
 	res.json({
 		message: "deleted"
 	})
