@@ -5,7 +5,7 @@ const User = require("../models/User.model")
 
 exports.getPlaylists = async (req, res) => {
     const list = await Playlist.find()
-	.populate("tracks") 
+	.populate("tracks")
     res.json(list)
 }
 
@@ -18,7 +18,6 @@ exports.getPlaylistById = async (req,res) => {
 
 exports.createPlaylist = async (req,res) => {
     const {name, userId} = req.body
-	// console.log(userId)
     const list = await Playlist.create({name})
 	await User.findByIdAndUpdate(userId,{$push:{playlists:list._id}},	{ new: true })
 		res.json(list)
@@ -26,11 +25,13 @@ exports.createPlaylist = async (req,res) => {
 
 exports.updatePlaylist = async (req, res) => {
 	const { id } = req.params
-	const { name } = req.body
+	const { newName } = req.body
+	console.log(newName)
+	
 	const list = await Playlist.findByIdAndUpdate(
 		id,
 		{
-			name
+			name:newName
 		},
 		{ new: true }
 	)
