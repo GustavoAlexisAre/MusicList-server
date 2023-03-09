@@ -66,12 +66,10 @@ router.get('/albums/:albumId/tracks', (req, res, next) => {
                 spotifyApi.getAlbum(albumId)
               ])
                 .then((resultado) =>{
-                    console.log(resultado)
+                   
                     const artist = resultado[0].body
                     const album = resultado[1].body;
-                    console.log(artist)
-                    console.log(album)
-
+                 
                 res.json({
                     tracks: tracks,
                     artist: {
